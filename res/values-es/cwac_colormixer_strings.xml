@@ -8,6 +8,7 @@
   <string name="cwac_colormixer_options">Opciones</string>
   <string name="cwac_colormixer_defaultcolor">Color por defecto</string>
   <string name="cwac_colormixer_copy">Copiar color</string>
+  <string name="cwac_colormixer_palette">Paleta de colores</string>
   <string name="cwac_colormixer_paste">Pegar color</string>
   <string name="cwac_colormixer_selectingoptions">Selección de opciones</string>
   <string name="cwac_colormixer_copiedcolortoclipboard">Color copiado al portapapeles</string>

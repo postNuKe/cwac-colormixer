@@ -7,6 +7,7 @@ import com.commonsware.cwac.parcel.ParcelHelper;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.ClipData;
 import android.text.ClipboardManager;
 import android.content.Context;
@@ -21,7 +22,10 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 
 public class ColorMixerDialogCopy extends AlertDialog
@@ -70,6 +74,7 @@ implements DialogInterface.OnClickListener {
 		//Log.d("onClick", "color:" + mixer.getColor());
 		if(which == DialogInterface.BUTTON_NEUTRAL){
 			List<CharSequence> list_options = new ArrayList<CharSequence>();
+			list_options.add(ctx.getText(parcel.getIdentifier("palette", "string")));
 			list_options.add(ctx.getText(parcel.getIdentifier("defaultcolor", "string")));
 			list_options.add(ctx.getText(parcel.getIdentifier("copy", "string")));
 			//only if i have copied the color to clipboard
@@ -89,17 +94,21 @@ implements DialogInterface.OnClickListener {
 		           .setItems(items, new DialogInterface.OnClickListener() {
 		               public void onClick(DialogInterface dialog, int which) {
 		            	   switch (which) {
-		            	   case 0://default color
+		            	   case 0://palette
+		            		   dialog = new RainbowPickerDialog(ctx, mixer, onSet);
+		   					   ((Dialog) dialog).show();
+		            		   break;
+		            	   case 1://default color
 		            		   mixer.setColor(defaultColor);
         				   	   onSet.onColorChange(mixer.getColor());
 		            		   break;
-		            	   case 1://copy
+		            	   case 2://copy
 		            		   clipboard.setText(String.valueOf(mixer.getColor()));
 		            		   Toast.makeText(ctx, 
 		            				   ctx.getText(parcel.getIdentifier("copiedcolortoclipboard", "string")), 
 		            				   Toast.LENGTH_LONG).show();
 		            		   break;
-		            	   case 2://paste
+		            	   case 3://paste
 		            		   if(clipboard.hasText()){
 		            			   String text = clipboard.getText().toString();
 		            			   if(text.length() >= 2){
@@ -121,7 +130,7 @@ implements DialogInterface.OnClickListener {
 			onSet.onColorChange(mixer.getColor());
 		}
 	}
-
+	
 	@Override
 	public Bundle onSaveInstanceState() {
 		Bundle state=super.onSaveInstanceState();
